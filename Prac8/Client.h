@@ -15,14 +15,14 @@ private:
     std::filesystem::path directory;
 
 public:
-    BackupClient(const std::filesystem::path& directory);
+    BackupClient(const std::filesystem::path &directory);
     ~BackupClient();
 
     void updateFileMap();
     void printFileMap() const;
     bool checkForChanges();
 
-    void backupFiles(FTPClient& ftpClient);
+    void backupFiles(FTPClient &ftpClient);
 };
 
 #endif

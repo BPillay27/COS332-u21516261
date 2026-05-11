@@ -140,8 +140,7 @@ int FTPClient::enterPassiveMode()
     return std::stoi(portString);
 }
 
-void FTPClient::uploadFile(const std::filesystem::path& localFilePath,
-                           const std::string& remoteFileName)
+void FTPClient::uploadFile(const std::filesystem::path &localFilePath, const std::string &remoteFileName)
 {
     std::ifstream file(localFilePath, std::ios::binary);
 
@@ -171,7 +170,7 @@ void FTPClient::uploadFile(const std::filesystem::path& localFilePath,
         throw std::runtime_error("Invalid FTP server IP address for data connection.");
     }
 
-    if (connect(dataSocket, (sockaddr*)&dataAddress, sizeof(dataAddress)) < 0)
+    if (connect(dataSocket, (sockaddr *)&dataAddress, sizeof(dataAddress)) < 0)
     {
         close(dataSocket);
         throw std::runtime_error("Failed to connect data socket.");
@@ -216,9 +215,12 @@ void FTPClient::uploadFile(const std::filesystem::path& localFilePath,
     }
 
     std::cout << "Uploaded file: " << remoteFileName << std::endl;
+    long remoteSize = getRemoteFileSize(remoteFileName);
+
+    std::cout << "Remote file size: " << remoteSize << " bytes" << std::endl;
 }
 
-void FTPClient::changeDirectory(const std::string& remoteDirectory)
+void FTPClient::changeDirectory(const std::string &remoteDirectory)
 {
     sendCommand("CWD " + remoteDirectory);
 
@@ -228,4 +230,33 @@ void FTPClient::changeDirectory(const std::string& remoteDirectory)
     {
         throw std::runtime_error("Failed to change FTP remote directory.");
     }
+}
+
+long FTPClient::getRemoteFileSize(const std::string &remoteFileName)
+{
+    sendCommand("SIZE " + remoteFileName);
+
+    std::string response = readResponse();
+
+    if (response.substr(0, 3) != "213")
+    {
+        throw std::runtime_error("Failed to get remote file size.");
+    }
+    std::string sizeString = response.substr(4);
+
+    return std::stol(sizeString);
+}
+
+void FTPClient::deleteRemoteFile(const std::string &remoteFileName)
+{
+    sendCommand("DELE " + remoteFileName);
+
+    std::string response = readResponse();
+
+    if (response.substr(0, 3) != "250")
+    {
+        throw std::runtime_error("Failed to delete remote file.");
+    }
+
+    std::cout << "Deleted remote file: " << remoteFileName << std::endl;
 }

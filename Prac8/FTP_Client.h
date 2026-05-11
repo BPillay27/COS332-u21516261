@@ -12,17 +12,19 @@ private:
     int serverPort;
 
     std::string readResponse();
-    void sendCommand(const std::string& command);
+    void sendCommand(const std::string &command);
     int enterPassiveMode();
 
 public:
-    FTPClient(const std::string& serverIP, int serverPort);
+    FTPClient(const std::string &serverIP, int serverPort);
     ~FTPClient();
-    void changeDirectory(const std::string& remoteDirectory);
+    void changeDirectory(const std::string &remoteDirectory);
     void connectToServer();
-    void login(const std::string& username, const std::string& password);
-    void uploadFile(const std::filesystem::path& localFilePath,
-                    const std::string& remoteFileName);
+    void login(const std::string &username, const std::string &password);
+    void uploadFile(const std::filesystem::path &localFilePath,
+                    const std::string &remoteFileName);
+    long getRemoteFileSize(const std::string &remoteFileName);
+    void deleteRemoteFile(const std::string &remoteFileName);
     void disconnect();
 };
 

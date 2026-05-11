@@ -64,6 +64,8 @@ int main()
         ftpClient.login(username, password);
         ftpClient.changeDirectory(remoteDir);
 
+        ftpClient.deleteRemoteFile("test.txt");
+
         BackupClient backupClient(watchDir);
 
         std::cout << "Monitoring directory: " << watchDir << std::endl;
@@ -80,7 +82,6 @@ int main()
 
             std::this_thread::sleep_for(std::chrono::seconds(pollInterval));
         }
-
         ftpClient.disconnect();
     }
     catch (const std::exception& e)

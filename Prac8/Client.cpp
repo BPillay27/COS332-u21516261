@@ -1,6 +1,6 @@
 #include "Client.h"
 
-BackupClient::BackupClient(const std::filesystem::path& directory)
+BackupClient::BackupClient(const std::filesystem::path &directory)
 {
     if (!std::filesystem::exists(directory) || !std::filesystem::is_directory(directory))
     {
@@ -19,7 +19,7 @@ void BackupClient::updateFileMap()
 {
     fileMap.clear();
 
-    for (const auto& entry : std::filesystem::directory_iterator(directory))
+    for (const auto &entry : std::filesystem::directory_iterator(directory))
     {
         if (entry.is_regular_file() && entry.path().extension() == ".txt")
         {
@@ -42,7 +42,7 @@ bool BackupClient::checkForChanges()
 {
     std::map<std::filesystem::path, std::filesystem::file_time_type> currentMap;
 
-    for (const auto& entry : std::filesystem::directory_iterator(directory))
+    for (const auto &entry : std::filesystem::directory_iterator(directory))
     {
         if (entry.is_regular_file() && entry.path().extension() == ".txt")
         {
@@ -71,9 +71,9 @@ bool BackupClient::checkForChanges()
     return false;
 }
 
-void BackupClient::backupFiles(FTPClient& ftpClient)
+void BackupClient::backupFiles(FTPClient &ftpClient)
 {
-    for (const auto& entry : std::filesystem::directory_iterator(directory))
+    for (const auto &entry : std::filesystem::directory_iterator(directory))
     {
         if (entry.is_regular_file() && entry.path().extension() == ".txt")
         {
