@@ -1,0 +1,7 @@
+swaks --server 127.0.0.1:55555 \
+  --from byron@localhost \
+  --to byron@localhost \
+  --header "Subject: Swaks Base64 Firewall Test" \
+  --header "Content-Type: text/plain; charset=UTF-8" \
+  --header "Content-Transfer-Encoding: base64" \
+  --body "$(echo -n 'I ran fast and the room is warm. This is very good.' | base64)"
